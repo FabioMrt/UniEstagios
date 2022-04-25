@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "557868574089",
+    "project_id": "uniestagios-343a1",
+    "storage_bucket": "uniestagios-343a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:557868574089:android:6912e078d2ffb2b62ded58",
+        "android_client_info": {
+          "package_name": "com.example.uniestagios"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "557868574089-fahedm5lhlts0s8rhb94aavmfkll6n5j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.uniestagios",
+            "certificate_hash": "3d10b1f0458e50b8184efade0b8b45fcc2ae34a5"
+          }
+        },
+        {
+          "client_id": "557868574089-9i6qdsollb6ouc7tf3obdav7r6ik1rch.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL3vvbzUP_wU-jPL_NtyGNTm293rDU6Cw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "557868574089-9i6qdsollb6ouc7tf3obdav7r6ik1rch.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
