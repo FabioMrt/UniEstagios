@@ -1,4 +1,6 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:uniestagios/components/input/app_input.dart';
@@ -41,49 +43,22 @@ class _InternSignUpState extends State<InternSignUp> {
           child: Scaffold(
             body: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 70,
+                    height: 50,
                   ),
                   Padding(
                     padding: kDefaultPadding,
-                    child: Text(
-                      'Criar Conta',
-                      style: titleText,
+                    child: Center(
+                      child: Text(
+                        'ESTAGIÁRIO',
+                        style: titleText,
+                      ),
                     ),
                   ),
                   SizedBox(
-                    height: 5,
-                  ),
-                  Padding(
-                    padding: kDefaultPadding,
-                    child: Row(
-                      children: [
-                        Text(
-                          'Já tem cadastro?',
-                          style: subTitle,
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Get.toNamed('/login');
-                          },
-                          child: Text(
-                            'Entre',
-                            style: textButton.copyWith(
-                              decoration: TextDecoration.underline,
-                              decorationThickness: 1,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
+                    height: 40,
                   ),
                   Padding(
                     padding: kDefaultPadding,
@@ -92,13 +67,24 @@ class _InternSignUpState extends State<InternSignUp> {
                       child: Column(
                         children: [
                           AppInput(
+                            hintText: 'Nome completo',
+                            validator: (value) => validateForm(
+                              value,
+                              ValidationMethod.SIMPLE_FIELD,
+                            ),
+                            onSaved: (value) {
+                              controller.userInternModel.name = value!;
+                            },
+                          ),
+                          SizedBox(height: 10),
+                          AppInput(
                             hintText: 'Email',
                             validator: (value) => validateForm(
                               value,
                               ValidationMethod.EMAIL,
                             ),
                             onSaved: (value) {
-                              model.email = value!;
+                              controller.userInternModel.email = value!;
                             },
                           ),
                           SizedBox(height: 10),
@@ -109,8 +95,12 @@ class _InternSignUpState extends State<InternSignUp> {
                               ValidationMethod.SIMPLE_FIELD,
                             ),
                             onSaved: (value) {
-                              model.phone = value!;
+                              controller.userInternModel.phone = value!;
                             },
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              TelefoneInputFormatter(),
+                            ],
                           ),
                           SizedBox(height: 10),
                           AppInput(
@@ -122,7 +112,7 @@ class _InternSignUpState extends State<InternSignUp> {
                               ValidationMethod.PASSWORD,
                             ),
                             onSaved: (value) {
-                              model.password = value!;
+                              controller.userInternModel.password = value!;
                             },
                           ),
                           SizedBox(height: 10),
@@ -156,12 +146,7 @@ class _InternSignUpState extends State<InternSignUp> {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState?.save();
 
-                      try {
-                        _loading.on();
-                        await controller.signUp(model);
-                      } finally {
-                        _loading.out();
-                      }
+                      Get.toNamed('/register/intern/second');
                     }
                   },
                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:uniestagios/theme.dart';
 
 class AppInput extends StatefulWidget {
@@ -17,6 +18,7 @@ class AppInput extends StatefulWidget {
   final String? Function(String?)? validator;
   final double? width;
   final bool isObscure;
+  final List<TextInputFormatter>? inputFormatters;
 
   const AppInput({
     Key? key,
@@ -35,6 +37,7 @@ class AppInput extends StatefulWidget {
     this.textAlignVertical,
     this.validator,
     this.width,
+    this.inputFormatters,
   }) : super(key: key);
 
   @override
@@ -96,6 +99,7 @@ class _AppInputState extends State<AppInput> {
       onFieldSubmitted: widget.onSubmitted,
       textAlignVertical: widget.textAlignVertical,
       validator: widget.validator,
+      inputFormatters: widget.inputFormatters,
     );
   }
 

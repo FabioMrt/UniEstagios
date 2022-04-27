@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:uniestagios/app_bindings.dart';
 import 'package:uniestagios/routes/app_pages.dart';
 import 'package:uniestagios/routes/app_routes.dart';
@@ -29,7 +30,6 @@ class MyApp extends StatelessWidget {
     return FutureBuilder(
       future: _initialization,
       builder: (context, snapshot) {
-        if (snapshot.hasError) return Container();
         if (snapshot.connectionState == ConnectionState.done) {
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
@@ -40,6 +40,14 @@ class MyApp extends StatelessWidget {
             initialRoute: Routes.SPLASH,
             initialBinding: AppBindings(),
             getPages: AppPages.routes,
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('pt', 'BR'),
+            ],
           );
         }
         return Container();

@@ -1,17 +1,26 @@
 class InternModel {
-  String cpf;
-  String age;
-  String course;
-  String graduation;
-  String state;
-  String city;
+  String? id;
+  String? age;
+  String? course;
+  String? university;
+  String? state;
+  String? city;
 
   InternModel({
-    this.cpf = '',
-    this.age = '',
-    this.course = '',
-    this.graduation = '',
-    this.state = '',
-    this.city = '',
+    this.id,
+    this.age,
+    this.course,
+    this.university,
+    this.state,
+    this.city,
   });
+
+  factory InternModel.fromJson(Map<String, dynamic> json) => InternModel(
+        id: json['id'] as String? ?? '',
+        age: json['idade'] as String? ?? '',
+        course: json['curso'] as String? ?? '',
+        university: json['universidade'] as String? ?? '',
+        state: json['estado'] as String? ?? '',
+        city: json['cidade'] as String? ?? '',
+      );
 }

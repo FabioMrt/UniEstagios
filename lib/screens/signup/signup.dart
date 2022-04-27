@@ -34,150 +34,122 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Theme(
-          data: ThemeData().copyWith(
-            dividerColor: Colors.transparent,
-          ),
-          child: Scaffold(
-            body: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 70,
-                  ),
-                  Padding(
-                    padding: kDefaultPadding,
-                    child: Text(
-                      'Criar Conta',
-                      style: titleText,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Padding(
-                    padding: kDefaultPadding,
-                    child: Row(
-                      children: [
-                        Text(
-                          'Já tem cadastro?',
-                          style: subTitle,
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Get.toNamed('/login');
-                          },
-                          child: Text(
-                            'Entre',
-                            style: textButton.copyWith(
-                              decoration: TextDecoration.underline,
-                              decorationThickness: 1,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: kDefaultPadding,
-                    child: Form(
-                      key: formKey,
-                      child: Column(
-                        children: [
-                          AppInput(
-                            hintText: 'Email',
-                            validator: (value) => validateForm(
-                              value,
-                              ValidationMethod.EMAIL,
-                            ),
-                            onSaved: (value) {
-                              model.email = value!;
-                            },
-                          ),
-                          SizedBox(height: 10),
-                          AppInput(
-                            hintText: 'Telefone',
-                            validator: (value) => validateForm(
-                              value,
-                              ValidationMethod.SIMPLE_FIELD,
-                            ),
-                            onSaved: (value) {
-                              model.phone = value!;
-                            },
-                          ),
-                          SizedBox(height: 10),
-                          AppInput(
-                            controller: _pass,
-                            hintText: 'Senha',
-                            isObscure: true,
-                            validator: (value) => validateForm(
-                              value,
-                              ValidationMethod.PASSWORD,
-                            ),
-                            onSaved: (value) {
-                              model.password = value!;
-                            },
-                          ),
-                          SizedBox(height: 10),
-                          AppInput(
-                            controller: _confirmPass,
-                            hintText: 'Confirme a Senha',
-                            isObscure: true,
-                            validator: (value) {
-                              if (value != _pass.text) {
-                                return 'As senhas não conferem';
-                              }
-                              return null;
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 50,
             ),
-            persistentFooterButtons: [
-              Padding(
-                padding: kDefaultPadding,
-                child: PrimaryButton(
-                  buttonText: 'Inscrever-se',
-                  onTap: () async {
-                    if (formKey.currentState!.validate()) {
-                      formKey.currentState?.save();
-
-                      try {
-                        _loading.on();
-                        await controller.signUp(model);
-                      } finally {
-                        _loading.out();
-                      }
-                    }
-                  },
+            Padding(
+              padding: kDefaultPadding,
+              child: Center(
+                child: Text(
+                  'CADASTRO',
+                  style: titleText,
                 ),
               ),
-            ],
-          ),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            GestureDetector(
+              onTap: () {
+                Get.toNamed('/register/intern');
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: kPrimaryColor,
+                    width: 4,
+                    style: BorderStyle.solid,
+                  ),
+                ),
+                height: 250,
+                width: 294,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.person,
+                      size: 90,
+                      color: kPrimaryColor,
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Sou um estudante',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 20,
+                        color: kPrimaryColor,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Busco vagas de estágios',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 20,
+                        color: Color(0xff6D6C6C),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 64,
+            ),
+            GestureDetector(
+              onTap: () {
+                Get.toNamed('/register/enterprise');
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: kPrimaryColor,
+                    width: 4,
+                    style: BorderStyle.solid,
+                  ),
+                ),
+                height: 250,
+                width: 294,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.adf_scanner_rounded,
+                      size: 90,
+                      color: kPrimaryColor,
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Sou uma empresa',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 20,
+                        color: kPrimaryColor,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Busco estagiários',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 20,
+                        color: Color(0xff6D6C6C),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
-        Obx(
-          () => Visibility(
-            visible: _loading.status.value,
-            child: AppOverlay(),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

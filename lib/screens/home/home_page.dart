@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:uniestagios/screens/infovaga/info_vaga.dart';
+import 'package:get/get.dart';
+import 'package:uniestagios/controllers/user_controller.dart';
+import 'package:uniestagios/models/job_model.dart';
 import 'package:uniestagios/theme.dart';
+import 'package:uniestagios/utils/format_date.dart';
+
+import 'controllers/home_controller.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,18 +15,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _homeController = Get.find<HomeController>();
+
+  @override
+  void initState() {
+    super.initState();
+    _homeController.getJobs();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Center(
-          child: SizedBox(
-            width: 100,
-            child: Title(
-              color: kPrimaryColor,
-              child: Text("Painel de Vagas"),
-            ),
+        centerTitle: true,
+        title: Text(
+          "Painel de Vagas",
+          style: TextStyle(
+            color: kPrimaryColor,
           ),
         ),
         actions: <Widget>[
@@ -39,59 +50,68 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Container(
         color: Color.fromARGB(255, 236, 230, 230),
-        child: ListView(
-          children: <Widget>[
-            cardItem(),
-            cardItem(),
-            cardItem(),
-            cardItem(),
-            cardItem(),
-            cardItem(),
-          ],
-        ),
+        child: Obx(() {
+          return ListView.builder(
+            itemCount: _homeController.jobsList.length,
+            itemBuilder: (context, index) {
+              JobModel model = _homeController.jobsList[index];
+
+              return Card(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          model.profilePic,
+                        ),
+                      ),
+                      title: Text(model.enterpriseName),
+                      subtitle: Text(
+                        formatDateToText(
+                          context,
+                          model.jobDate,
+                        )!,
+                      ),
+                      trailing: Icon(Icons.more_vert),
+                    ),
+                    Container(
+                      child: Image.network(
+                        model.cvPic,
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        margin: EdgeInsets.only(
+                          top: 20,
+                        ),
+                        child: Text(
+                          model.jobDescription,
+                        ),
+                      ),
+                    ),
+                    ButtonTheme(
+                        child: ButtonBar(
+                      children: <Widget>[
+                        FlatButton(
+                          child: Icon(Icons.info_outline, color: kPrimaryColor),
+                          onPressed: () {
+                            ;
+                          },
+                        ),
+                        FlatButton(
+                          child: Icon(Icons.share, color: kPrimaryColor),
+                          onPressed: () {/* .... */},
+                        ),
+                      ],
+                    ))
+                  ],
+                ),
+              );
+            },
+          );
+        }),
       ),
     );
   }
-}
-
-Widget cardItem() {
-  return Card(
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        const ListTile(
-          leading: CircleAvatar(
-            backgroundImage: NetworkImage(
-                "https://www.rededompedro.com/images/site/315f4093c038abbeb5b387e2772ee6d2.png"),
-          ),
-          title: Text("E MESMO"),
-          subtitle: Text("dd/mm/aaaa  hh:mm"),
-          trailing: Icon(Icons.more_vert),
-        ),
-        Container(
-            //padding
-            child: Image.asset("images/vaga02.jpeg")),
-        Container(
-          padding: EdgeInsets.all(10),
-          child:
-              Text("Vagas para desenvolvedor júnior/pleno na stack javascript"),
-        ),
-        ButtonTheme(
-            child: ButtonBar(
-          children: <Widget>[
-            FlatButton(
-              child: Icon(Icons.info_outline, color: kPrimaryColor),
-              onPressed: () {
-                ;
-              },
-            ),
-            FlatButton(
-              child: Icon(Icons.share, color: kPrimaryColor),
-              onPressed: () {/* .... */},
-            ),
-          ],
-        ))
-      ],
-    ),
-  );
 }

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:uniestagios/controllers/user_controller.dart';
 
 import 'profile_menu.dart';
 import 'profile_pic.dart';
 
 class Body extends StatelessWidget {
+  final _userController = Get.find<UserController>();
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -35,7 +39,9 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: "Sair",
             icon: "icons/log_out.svg",
-            press: () {},
+            press: () {
+              _userController.signOut();
+            },
           ),
         ],
       ),

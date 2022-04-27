@@ -5,6 +5,8 @@ import 'package:uniestagios/theme.dart';
 import '../screens/home/home_page.dart';
 
 class Nav extends StatefulWidget {
+  const Nav({Key? key}) : super(key: key);
+
   @override
   _NavState createState() => _NavState();
 }
@@ -12,7 +14,6 @@ class Nav extends StatefulWidget {
 class _NavState extends State<Nav> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
-    //listar telas Home(),
     HomePage(),
     Text('Buscar'),
     Text('Favoritos'),
@@ -38,13 +39,21 @@ class _NavState extends State<Nav> {
         unselectedLabelStyle: TextStyle(color: kPrimaryColor),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined), label: "Início"),
+            icon: Icon(Icons.home_outlined),
+            label: "Início",
+          ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.search_outlined), label: "Buscar"),
+            icon: Icon(Icons.search_outlined),
+            label: "Buscar",
+          ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_outline), label: "Favoritos"),
+            icon: Icon(Icons.favorite_outline),
+            label: "Favoritos",
+          ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline), label: "Perfil"),
+            icon: Icon(Icons.person_outline),
+            label: "Perfil",
+          ),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTap,
