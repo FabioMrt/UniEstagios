@@ -4,8 +4,9 @@ import 'package:uniestagios/core/datetime/datetime_conversion.dart';
 
 @JsonSerializable()
 class JobModel {
+  String jobName;
+  String jobArea;
   String enterpriseName;
-  String jobDescription;
   String profilePic;
   String cvPic;
   String city;
@@ -13,10 +14,12 @@ class JobModel {
   bool available;
   String id;
   String enterpriseId;
+  String enterpriseEmail;
 
   JobModel({
+    this.jobName = '',
+    this.jobArea = '',
     this.enterpriseName = '',
-    this.jobDescription = '',
     this.profilePic = '',
     this.city = '',
     this.cvPic = '',
@@ -24,11 +27,13 @@ class JobModel {
     this.jobDate,
     this.id = '',
     this.enterpriseId = '',
+    this.enterpriseEmail = '',
   });
 
   factory JobModel.fromJson(Map<String, dynamic> json) => JobModel(
+        jobName: json['nomeVaga'] as String,
+        jobArea: json['area'] as String,
         enterpriseName: json['nomeEmpresa'] as String,
-        jobDescription: json['descricaoVaga'] as String,
         profilePic: json['fotoPerfil'] as String,
         city: json['cidade'] as String,
         cvPic: json['fotoVaga'] as String,
@@ -36,5 +41,6 @@ class JobModel {
         jobDate: dateTimeFromTimestamp(json['dataVaga'] as Timestamp?),
         id: json['id'] as String,
         enterpriseId: json['empresaId'] as String,
+        enterpriseEmail: json['emailEmpresa'] as String,
       );
 }

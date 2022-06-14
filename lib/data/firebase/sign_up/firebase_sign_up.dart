@@ -12,8 +12,9 @@ class FirebaseSignUp {
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   AuthResultStatus status = AuthResultStatus.undefined;
+  late User user;
 
-  Future<AuthResultStatus> createInternUser(
+  Future<User> createInternUser(
       UserModel userModel, InternModel internModel) async {
     try {
       final credential = await _auth.createUserWithEmailAndPassword(
@@ -22,7 +23,7 @@ class FirebaseSignUp {
       );
 
       if (credential.user != null) {
-        final user = credential.user!;
+        user = credential.user!;
         _updateDisplayName(user, userModel.name);
         _setRole(user, 'estagiario');
         _setInternFirestoreUser(user, userModel, internModel);
@@ -30,14 +31,15 @@ class FirebaseSignUp {
         status = AuthResultStatus.successful;
       }
     } on FirebaseAuthException catch (e) {
+      user.displayName == null;
       print(e);
       status = AuthExceptionHandler.handleException(e);
     }
 
-    return status;
+    return user;
   }
 
-  Future<AuthResultStatus> createEnterpriseUser(
+  Future<User> createEnterpriseUser(
       UserModel userModel, EnterpriseModel enterpriseModel) async {
     try {
       final credential = await _auth.createUserWithEmailAndPassword(
@@ -46,7 +48,7 @@ class FirebaseSignUp {
       );
 
       if (credential.user != null) {
-        final user = credential.user!;
+        user = credential.user!;
         _updateDisplayName(user, userModel.name);
         _setRole(user, 'empresa');
         _setEnterpriseFirestoreUser(user, userModel, enterpriseModel);
@@ -54,11 +56,12 @@ class FirebaseSignUp {
         status = AuthResultStatus.successful;
       }
     } on FirebaseAuthException catch (e) {
+      user.displayName == null;
       print(e);
       status = AuthExceptionHandler.handleException(e);
     }
 
-    return status;
+    return user;
   }
 
   Future _updateDisplayName(User user, String name) async {
@@ -92,13 +95,15 @@ class FirebaseSignUp {
       User user, UserModel userModel, EnterpriseModel enterpriseModel) async {
     return await _firestore.collection('empresas').doc(user.uid).set({
       'id': user.uid,
-      'nome': userModel.name,
+      'nome': enterpriseModel.socialReason,
       'email': userModel.email,
+      'area': enterpriseModel.area,
       'telefone': userModel.phone,
       'razaosocial': enterpriseModel.socialReason,
       'cnpj': enterpriseModel.cnpj,
       'estado': enterpriseModel.state,
       'cidade': enterpriseModel.city,
+      'foto': '',
     });
   }
 

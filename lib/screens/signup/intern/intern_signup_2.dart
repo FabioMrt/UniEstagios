@@ -1,9 +1,18 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:path/path.dart';
 
 import 'package:get/get.dart';
 import 'package:uniestagios/components/input/app_input.dart';
 import 'package:uniestagios/components/primary_button.dart';
 import 'package:uniestagios/controllers/loading_controller.dart';
+import 'package:uniestagios/controllers/user_controller.dart';
 import 'package:uniestagios/domain/form_validation/input_validator.dart';
 import 'package:uniestagios/screens/signup/signup_controller.dart';
 import 'package:uniestagios/shared/csc_picker.dart';
@@ -22,8 +31,57 @@ class InternSecondSignUp extends StatefulWidget {
 class _InternSecondSignUpState extends State<InternSecondSignUp> {
   final controller = Get.find<SignUpController>();
 
+  final _userController = Get.find<UserController>();
+
   final formKey = GlobalKey<FormState>();
   final _loading = Get.find<LoadingController>();
+  File? _photo;
+
+  FirebaseStorage storage = FirebaseStorage.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  Future imgFromGallery() async {
+    FilePickerResult? pickedFile = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'png', 'jpeg'],
+      allowMultiple: false,
+    );
+    setState(() {
+      if (pickedFile != null) {
+        _photo = File(pickedFile.files.first.path!);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future uploadFile(File? _photo, User user) async {
+    if (_photo == null) return;
+    final fileName = basename(_photo.path);
+    final destination = 'uploads/${user.uid}/$fileName';
+    try {
+      _loading.on();
+      final ref = storage.ref(destination).child('file/');
+      await ref.putFile(_photo);
+      await ref.getDownloadURL().then((value) async {
+        await firestore
+            .collection('estagiarios')
+            .doc(user.uid)
+            .update({'fotoPerfil': value});
+      }).then((value) {
+        _userController.authState;
+        _loading.out();
+      });
+    } catch (e) {
+      _loading.out();
+      appWarningDialog(
+        title: 'Erro!',
+        middleText: 'Tente novamente',
+      );
+    } finally {
+      _loading.out();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,51 +109,65 @@ class _InternSecondSignUpState extends State<InternSecondSignUp> {
                     ),
                   ),
                   SizedBox(
-                    height: 40,
+                    height: 20,
                   ),
-                  Padding(
-                    padding: kDefaultPadding,
-                    child: Form(
-                      key: formKey,
-                      child: Column(
-                        children: [
-                          AppInput(
-                            hintText: 'Universidade',
-                            validator: (value) => validateForm(
-                              value,
-                              ValidationMethod.SIMPLE_FIELD,
-                            ),
-                            onSaved: (value) {
-                              controller.internModel.university = value!;
-                            },
-                          ),
-                          SizedBox(height: 20),
-                          AppInput(
-                            hintText: 'Curso',
-                            validator: (value) => validateForm(
-                              value,
-                              ValidationMethod.SIMPLE_FIELD,
-                            ),
-                            onSaved: (value) {
-                              controller.internModel.course = value!;
-                            },
-                          ),
-                          SizedBox(height: 20),
-                          AppInput(
-                            hintText: 'Idade',
-                            validator: (value) => validateForm(
-                              value,
-                              ValidationMethod.SIMPLE_FIELD,
-                            ),
-                            onSaved: (value) {
-                              controller.internModel.age = value!;
-                            },
-                          ),
-                          SizedBox(height: 10),
-                        ],
-                      ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Escolha uma foto para o seu perfil',
+                    style: TextStyle(
+                      fontSize: 18,
                     ),
                   ),
+                  SizedBox(height: 20),
+                  SizedBox(
+                    height: 115,
+                    width: 115,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      clipBehavior: Clip.none,
+                      children: [
+                        _photo == null
+                            ? CircleAvatar(
+                                backgroundColor: kPrimaryColor,
+                                backgroundImage: AssetImage(
+                                  'assets/images/logo.png',
+                                ),
+                              )
+                            : CircleAvatar(
+                                backgroundColor: kPrimaryColor,
+                                backgroundImage: FileImage(
+                                  _photo!,
+                                ),
+                              ),
+                        Positioned(
+                          right: -16,
+                          bottom: 0,
+                          child: SizedBox(
+                            height: 46,
+                            width: 46,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                  side: BorderSide(color: Colors.white),
+                                ),
+                                primary: Colors.white,
+                                backgroundColor: Color(0xFFF5F6F9),
+                              ),
+                              onPressed: () {
+                                imgFromGallery();
+                              },
+                              child: SvgPicture.asset(
+                                "assets/icons/camera_icon.svg",
+                                color: kPrimaryColor,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
                   Padding(
                     padding: kDefaultPadding,
                     child: CSCPicker(
@@ -164,9 +236,12 @@ class _InternSecondSignUpState extends State<InternSecondSignUp> {
                 child: PrimaryButton(
                   buttonText: 'Finalizar cadastro',
                   onTap: () async {
-                    if (formKey.currentState!.validate()) {
-                      formKey.currentState?.save();
-
+                    if (_photo == null) {
+                      appWarningDialog(
+                        title: 'Erro!',
+                        middleText: 'Você precisa selecionar uma foto',
+                      );
+                    } else {
                       if (controller.internModel.state!.isEmpty) {
                         appWarningDialog(
                           title: 'Erro!',
@@ -177,13 +252,15 @@ class _InternSecondSignUpState extends State<InternSecondSignUp> {
                           title: 'Erro!',
                           middleText: 'Você precisa selecionar uma cidade',
                         );
-                      }
-
-                      try {
-                        _loading.on();
-                        await controller.signIntern();
-                      } finally {
-                        _loading.out();
+                      } else {
+                        try {
+                          _loading.on();
+                          await controller.signIntern().then((user) async {
+                            await uploadFile(_photo, user);
+                          });
+                        } finally {
+                          _loading.out();
+                        }
                       }
                     }
                   },

@@ -17,10 +17,9 @@ class LoginController extends GetxController {
     if (status == AuthResultStatus.successful) {
       String role = await _userController.getRole();
       if (role == "estagiario") {
-        Get.toNamed('/home');
+        _userController.authState;
       } else {
-        print("opa");
-        Get.toNamed('/enterprise');
+        _userController.authState;
       }
     } else {
       appWarningDialog(

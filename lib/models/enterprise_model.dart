@@ -5,8 +5,10 @@ class EnterpriseModel {
   String? email;
   String? password;
   String? phone;
+  String? area;
   String? state;
   String? city;
+  String? photo;
 
   EnterpriseModel({
     this.id,
@@ -14,9 +16,11 @@ class EnterpriseModel {
     this.cnpj,
     this.email,
     this.password,
+    this.area,
     this.phone,
     this.state,
     this.city,
+    this.photo,
   });
 
   factory EnterpriseModel.fromJson(Map<String, dynamic> json) =>
@@ -25,8 +29,10 @@ class EnterpriseModel {
         socialReason: json['razaosocial'] as String? ?? '',
         cnpj: json['cnpj'] as String? ?? '',
         email: json['email'] as String? ?? '',
+        area: json['area'] as String? ?? '',
         phone: json['telefone'] as String? ?? '',
         state: json['estado'] as String? ?? '',
         city: json['cidade'] as String? ?? '',
+        photo: json['foto'] as String? ?? '',
       );
 }

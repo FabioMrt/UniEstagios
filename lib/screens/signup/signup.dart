@@ -34,6 +34,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -65,17 +67,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     width: 4,
                     style: BorderStyle.solid,
                   ),
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                height: 250,
-                width: 294,
+                width: width * 0.65,
+                height: height * 0.30,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Icon(
-                      Icons.person,
-                      size: 90,
-                      color: kPrimaryColor,
+                  children: [
+                    Image.asset(
+                      'assets/images/student.png',
+                      width: 90,
+                      height: 90,
                     ),
                     SizedBox(height: 10),
                     Text(
@@ -113,17 +116,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     width: 4,
                     style: BorderStyle.solid,
                   ),
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                height: 250,
-                width: 294,
+                width: width * 0.65,
+                height: height * 0.30,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Icon(
-                      Icons.adf_scanner_rounded,
-                      size: 90,
-                      color: kPrimaryColor,
+                  children: [
+                    Image.asset(
+                      'assets/images/enterprise.png',
+                      width: 90,
+                      height: 90,
                     ),
                     SizedBox(height: 10),
                     Text(

@@ -43,7 +43,7 @@ class _OnbordingState extends State<Onboarding> {
               },
               itemBuilder: (_, i) {
                 return Padding(
-                  padding: const EdgeInsets.all(40),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     children: [
                       SizedBox(
@@ -94,7 +94,7 @@ class _OnbordingState extends State<Onboarding> {
                   currentIndex == contents.length - 1 ? "Continue" : "Próximo"),
               onPressed: () {
                 if (currentIndex == contents.length - 1) {
-                  Get.toNamed('/login');
+                  Get.offNamed('/login');
                 }
                 _controller.nextPage(
                   duration: Duration(milliseconds: 100),

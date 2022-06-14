@@ -7,6 +7,7 @@ import 'package:uniestagios/controllers/loading_controller.dart';
 import 'package:uniestagios/domain/form_validation/input_validator.dart';
 import 'package:uniestagios/screens/signup/signup_controller.dart';
 import 'package:uniestagios/theme.dart';
+import 'package:uniestagios/utils/areas.dart';
 import 'package:uniestagios/utils/overlay.dart';
 import 'package:uniestagios/utils/validate_form.dart';
 import 'package:brasil_fields/brasil_fields.dart';
@@ -30,6 +31,7 @@ class _EnterpriseSignUpState extends State<EnterpriseSignUp> {
   final TextEditingController _confirmPass = TextEditingController();
 
   final _loading = Get.find<LoadingController>();
+  String _selectedItem = "";
 
   bool responseValue = true;
   @override
@@ -67,15 +69,13 @@ class _EnterpriseSignUpState extends State<EnterpriseSignUp> {
                       child: Column(
                         children: [
                           AppInput(
-                            hintText: 'Razão social',
+                            hintText: 'Razão social (nome)',
                             validator: (value) => validateForm(
                               value,
                               ValidationMethod.SIMPLE_FIELD,
                             ),
                             onSaved: (value) {
                               controller.enterpriseModel.socialReason = value!;
-                              print(
-                                  'RAZAO ${controller.enterpriseModel.socialReason}');
                             },
                           ),
                           SizedBox(height: 10),
@@ -156,102 +156,44 @@ class _EnterpriseSignUpState extends State<EnterpriseSignUp> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: kDefaultPadding,
-                    child: CSCPicker(
-                      flagState: CountryFlag.DISABLE,
-                      showStates: true,
-                      showCities: true,
-                      currentCountry: 'Brazil',
-                      defaultCountry: DefaultCountry.Brasil,
-                      dropdownDecoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 1,
-                        ),
-                      ),
-                      disabledDropdownDecoration: BoxDecoration(
-                        color: Colors.grey.shade300,
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(
-                          color: Colors.grey.shade300,
-                          width: 1,
-                        ),
-                      ),
-                      stateSearchPlaceholder: "Estado onde mora",
-                      citySearchPlaceholder: "Cidade onde mora",
-                      countryDropdownLabel: "País onde mora",
-                      stateDropdownLabel: "Estado onde mora",
-                      cityDropdownLabel: "Cidade onde mora",
-                      layout: Layout.vertical,
-                      disableCountry: true,
-                      selectedItemStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                      ),
-                      dropdownHeadingStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      dropdownItemStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                      ),
-                      onCountryChanged: (value) {
-                        setState(() {});
-                      },
-                      onStateChanged: (value) {
-                        setState(() {
-                          controller.enterpriseModel.state = value ?? '';
-                          print('estado ${controller.enterpriseModel.state}');
-                        });
-                      },
-                      onCityChanged: (value) {
-                        setState(() {
-                          controller.enterpriseModel.city = value ?? '';
-                          print('cidade ${controller.enterpriseModel.city}');
-                        });
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 20),
                 ],
               ),
             ),
             persistentFooterButtons: [
               Padding(
                 padding: kDefaultPadding,
-                child: PrimaryButton(
-                  buttonText: 'Inscrever-se',
-                  onTap: () async {
+                child: ElevatedButton(
+                  child: SizedBox(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        'Continuar',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ],
+                  )),
+                  onPressed: () {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState?.save();
 
-                      if (controller.enterpriseModel.state!.isEmpty) {
-                        appWarningDialog(
-                          title: 'Erro!',
-                          middleText: 'Você precisa selecionar um estado',
-                        );
-                      } else if (controller.enterpriseModel.city!.isEmpty) {
-                        appWarningDialog(
-                          title: 'Erro!',
-                          middleText: 'Você precisa selecionar uma cidade',
-                        );
-                      }
-
-                      try {
-                        _loading.on();
-                        await controller.signEnterprise();
-                      } finally {
-                        _loading.out();
-                      }
+                      Get.toNamed('/register/enterprise/second');
                     }
                   },
+                  style: ElevatedButton.styleFrom(
+                    primary: kPrimaryColor,
+                    minimumSize: Size(128, 56),
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                  ),
                 ),
               ),
             ],

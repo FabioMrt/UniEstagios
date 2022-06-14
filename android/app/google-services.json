@@ -1,42 +1,77 @@
 {
   "project_info": {
-    "project_number": "557868574089",
-    "project_id": "uniestagios-343a1",
-    "storage_bucket": "uniestagios-343a1.appspot.com"
+    "project_number": "303238579276",
+    "project_id": "uniestagios-b0f25",
+    "storage_bucket": "uniestagios-b0f25.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:557868574089:android:6912e078d2ffb2b62ded58",
+        "mobilesdk_app_id": "1:303238579276:android:c30ce76b2429bd52cde0e9",
         "android_client_info": {
           "package_name": "com.example.uniestagios"
         }
       },
       "oauth_client": [
         {
-          "client_id": "557868574089-fahedm5lhlts0s8rhb94aavmfkll6n5j.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.uniestagios",
-            "certificate_hash": "3d10b1f0458e50b8184efade0b8b45fcc2ae34a5"
-          }
-        },
-        {
-          "client_id": "557868574089-9i6qdsollb6ouc7tf3obdav7r6ik1rch.apps.googleusercontent.com",
+          "client_id": "303238579276-k34rqvc369qlec0161tj3smm40kk0ulb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDL3vvbzUP_wU-jPL_NtyGNTm293rDU6Cw"
+          "current_key": "AIzaSyDQZ28DpZdibr1lkah_dscbGGpy70zOWxY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "557868574089-9i6qdsollb6ouc7tf3obdav7r6ik1rch.apps.googleusercontent.com",
+              "client_id": "303238579276-k34rqvc369qlec0161tj3smm40kk0ulb.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "303238579276-nhvthqlrgfk53vvlq2oj90s57oip6c1q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.uniestagios"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:303238579276:android:0c557129e4cd431bcde0e9",
+        "android_client_info": {
+          "package_name": "com.univas.uniestagios"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "303238579276-k34rqvc369qlec0161tj3smm40kk0ulb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQZ28DpZdibr1lkah_dscbGGpy70zOWxY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "303238579276-k34rqvc369qlec0161tj3smm40kk0ulb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "303238579276-nhvthqlrgfk53vvlq2oj90s57oip6c1q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.uniestagios"
+              }
             }
           ]
         }

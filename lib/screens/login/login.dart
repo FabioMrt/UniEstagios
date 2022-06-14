@@ -1,15 +1,14 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:uniestagios/components/input/app_input.dart';
-import 'package:uniestagios/components/primary_button.dart';
 import 'package:uniestagios/controllers/loading_controller.dart';
 import 'package:uniestagios/models/user_model.dart';
 import 'package:uniestagios/screens/login/login_controller.dart';
-import 'package:uniestagios/screens/reset/reset_password.dart';
 import 'package:uniestagios/theme.dart';
-import 'package:uniestagios/utils/overlay.dart';
 import 'package:uniestagios/utils/validate_form.dart';
+import 'package:uniestagios/widgets/app_button.dart';
 
 import '../../domain/form_validation/input_validator.dart';
 
@@ -23,143 +22,133 @@ class LogInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Theme(
-          data: ThemeData().copyWith(
-            dividerColor: Colors.transparent,
-          ),
-          child: Scaffold(
-            body: Padding(
-              padding: kDefaultPadding,
-              child: SingleChildScrollView(
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    return Scaffold(
+      body: Stack(
+        children: [
+          Container(
+            padding: kDefaultPadding,
+            child: SingleChildScrollView(
+              child: Form(
+                key: formKey,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 120,
+                      width: 300,
+                      height: 300,
+                      child: Center(
+                        child: Image.asset(
+                          'assets/images/login_logo.png',
+                          fit: BoxFit.fill,
+                        ),
+                      ),
                     ),
-                    Text(
-                      'Bem Vindo',
-                      style: titleText,
+                    AppInput(
+                      hintText: 'Email',
+                      validator: (value) => validateForm(
+                        value,
+                        ValidationMethod.EMAIL,
+                      ),
+                      suffix: Icon(
+                        Icons.mail,
+                        color: kPrimaryColor,
+                      ),
+                      onSaved: (value) {
+                        model.email = value ?? '';
+                      },
                     ),
+                    SizedBox(height: 20),
+                    AppInput(
+                      hintText: 'Senha',
+                      isObscure: true,
+                      validator: (value) => validateForm(
+                        value,
+                        ValidationMethod.PASSWORD,
+                      ),
+                      onSaved: (value) {
+                        model.password = value ?? '';
+                      },
+                    ),
+                    SizedBox(height: 30.0),
                     SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          'Não tem cadastro?',
-                          style: subTitle,
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Get.toNamed('/register');
+                      width: double.infinity,
+                      height: 45,
+                      child: Obx(
+                        () => AppButton(
+                          backgroundColor: kPrimaryColor,
+                          textColor: Colors.white,
+                          title: 'Entrar',
+                          busy: _loading.status.value,
+                          onPressed: () async {
+                            if (formKey.currentState!.validate()) {
+                              formKey.currentState?.save();
+
+                              try {
+                                _loading.on();
+                                await controller.signIn(
+                                  model.email,
+                                  model.password,
+                                );
+                              } finally {
+                                _loading.out();
+                              }
+                            }
                           },
-                          child: Text(
-                            'Inscrever-se',
-                            style: textButton.copyWith(
-                              decoration: TextDecoration.underline,
-                              decorationThickness: 1,
-                            ),
-                          ),
                         ),
-                      ],
+                      ),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Form(
-                      key: formKey,
+                    SizedBox(height: 20.0),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          AppInput(
-                            hintText: 'Email',
-                            validator: (value) => validateForm(
-                              value,
-                              ValidationMethod.EMAIL,
-                            ),
-                            onSaved: (value) {
-                              model.email = value ?? '';
-                            },
-                          ),
-                          SizedBox(height: 10),
-                          AppInput(
-                            hintText: 'Senha',
-                            isObscure: true,
-                            validator: (value) => validateForm(
-                              value,
-                              ValidationMethod.PASSWORD,
-                            ),
-                            onSaved: (value) {
-                              model.password = value ?? '';
+                          AppButton.text(
+                            title: 'Esqueci minha senha',
+                            textColor: Colors.black,
+                            onPressed: () {
+                              Get.toNamed('/forgotPassword');
                             },
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ResetPasswordScreen()));
-                      },
-                      child: Text(
-                        'Esqueceu a Senha?',
+                    RichText(
+                      text: TextSpan(
+                        text: 'Não possui uma conta? ',
                         style: TextStyle(
-                          color: kZambeziColor,
-                          fontSize: 14,
-                          decoration: TextDecoration.underline,
-                          decorationThickness: 1,
+                          color: kSecondaryColor,
+                          fontSize: 16,
                         ),
+                        children: [
+                          TextSpan(
+                            text: 'Cadastre-se',
+                            style: TextStyle(
+                              color: kPrimaryColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Get.toNamed('/register');
+                              },
+                          ),
+                        ],
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Get.toNamed('/register');
+                          },
                       ),
-                    ),
-                    SizedBox(
-                      height: 20,
                     ),
                   ],
                 ),
               ),
             ),
-            persistentFooterButtons: [
-              Padding(
-                padding: kDefaultPadding,
-                child: PrimaryButton(
-                  buttonText: 'Entre',
-                  onTap: () async {
-                    if (formKey.currentState!.validate()) {
-                      formKey.currentState?.save();
-
-                      try {
-                        _loading.on();
-                        await controller.signIn(
-                          model.email,
-                          model.password,
-                        );
-                      } finally {
-                        _loading.out();
-                      }
-                    }
-                  },
-                ),
-              ),
-            ],
           ),
-        ),
-        Obx(
-          () => Visibility(
-            visible: _loading.status.value,
-            child: AppOverlay(),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

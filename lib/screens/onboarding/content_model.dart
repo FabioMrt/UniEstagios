@@ -10,19 +10,19 @@ class UnbordingContent {
 List<UnbordingContent> contents = [
   UnbordingContent(
       title: 'Busca por Estágios',
-      image: 'images/onboarding01.png',
+      image: 'assets/images/onboarding01.png',
       discription: "Encontre a vaga de estágio ideal para você \n"
           "Receba as melhores oportunidades "
           "para iniciar sua carreira "),
   UnbordingContent(
     title: 'As melhores vagas',
-    image: 'images/onboarding02.png',
+    image: 'assets/images/onboarding02.png',
     discription: "Você terá acesso as melhores oportunidades "
         "de estágio \n disponíveis na sua região ",
   ),
   UnbordingContent(
     title: 'Praticidade ',
-    image: 'images/onboarding03.png',
+    image: 'assets/images/onboarding03.png',
     discription: "Envie seu currículo e candidate-se \n"
         "diretamente pelo aplicativo",
   ),

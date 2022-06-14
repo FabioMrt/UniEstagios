@@ -1,0 +1,15 @@
+List<String> appAreas = [
+  'COMPUTAÇÃO',
+  'EDUCAÇÃO',
+  'HUMANIDADES E ARTES',
+  'CIÊNCIAS SOCIAIS',
+  'NEGÓCIOS',
+  'DIREITO',
+  'CIÊNCIAS',
+  'MATEMÁTICA',
+  'ENGENHARIA, PRODUÇÃO E CONSTRUÇÃO',
+  'AGRICULTURA',
+  'SAÚDE',
+  'MEDICINA VETERINÁRIA',
+  'SERVIÇOS'
+];

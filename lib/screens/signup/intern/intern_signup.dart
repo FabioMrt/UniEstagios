@@ -78,6 +78,28 @@ class _InternSignUpState extends State<InternSignUp> {
                           ),
                           SizedBox(height: 10),
                           AppInput(
+                            hintText: 'Universidade',
+                            validator: (value) => validateForm(
+                              value,
+                              ValidationMethod.SIMPLE_FIELD,
+                            ),
+                            onSaved: (value) {
+                              controller.internModel.university = value!;
+                            },
+                          ),
+                          SizedBox(height: 10),
+                          AppInput(
+                            hintText: 'Curso',
+                            validator: (value) => validateForm(
+                              value,
+                              ValidationMethod.SIMPLE_FIELD,
+                            ),
+                            onSaved: (value) {
+                              controller.internModel.course = value!;
+                            },
+                          ),
+                          SizedBox(height: 10),
+                          AppInput(
                             hintText: 'Email',
                             validator: (value) => validateForm(
                               value,
@@ -140,15 +162,37 @@ class _InternSignUpState extends State<InternSignUp> {
             persistentFooterButtons: [
               Padding(
                 padding: kDefaultPadding,
-                child: PrimaryButton(
-                  buttonText: 'Inscrever-se',
-                  onTap: () async {
+                child: ElevatedButton(
+                  child: SizedBox(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        'Continuar',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ],
+                  )),
+                  onPressed: () {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState?.save();
 
                       Get.toNamed('/register/intern/second');
                     }
                   },
+                  style: ElevatedButton.styleFrom(
+                    primary: kPrimaryColor,
+                    minimumSize: Size(128, 56),
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                  ),
                 ),
               ),
             ],

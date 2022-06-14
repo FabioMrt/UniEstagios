@@ -10,8 +10,10 @@ class UserController extends GetxController {
 
   Stream<User?> get authState => _auth.authStateChanges();
   String? get userId => _auth.currentUser?.uid ?? '';
+  String? get email => _auth.currentUser?.email ?? '';
 
   EnterpriseModel enterpriseModel = EnterpriseModel();
+  InternModel internModel = InternModel();
 
   getRole() async {
     final data = await _firestore.collection('users').doc(userId).get();
@@ -23,7 +25,8 @@ class UserController extends GetxController {
 
   Future<InternModel> getCurrentIntern() async {
     final data = await _firestore.collection('estagiarios').doc(userId).get();
-    return InternModel.fromJson(data.data() ?? {});
+    internModel = InternModel.fromJson(data.data() ?? {});
+    return internModel;
   }
 
   Future getCurrentEnterprise() async {

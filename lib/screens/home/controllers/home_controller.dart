@@ -7,11 +7,22 @@ class HomeController extends GetxController {
   final _firebaseJob = FirebaseJobData();
   final _userController = Get.find<UserController>();
 
-  var jobsList = <JobModel>[].obs;
+  var jobsList = <JobModel?>[].obs;
 
-  Future<List<JobModel>> getJobs() async {
+  Future<List<JobModel?>> getJobs() async {
     final user = await _userController.getCurrentIntern();
     jobsList.value = await _firebaseJob.getJobsByCity(user.city ?? "");
+    return jobsList;
+  }
+
+  Future<List<JobModel?>> getEnterpriseJobs() async {
+    final user = await _userController.getCurrentEnterprise();
+    jobsList.value = await _firebaseJob.getEnterpriseJobs(user.id ?? "");
+    return jobsList;
+  }
+
+  Future<List<JobModel?>> getJobsByCity(String city) async {
+    jobsList.value = await _firebaseJob.getJobsByCity(city);
     return jobsList;
   }
 }

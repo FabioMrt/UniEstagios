@@ -63,6 +63,7 @@ class _AppInputState extends State<AppInput> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
+      cursorColor: kPrimaryColor,
       decoration: InputDecoration(
         hintText: widget.hintText,
         border: _outlineBorder(color: kPrimaryColor),

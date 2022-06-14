@@ -15,25 +15,23 @@ class AppInitial extends GetxController {
     bool firstAccess = prefs.getBool('firstAccess') ?? false;
 
     if (!firstAccess) {
-      Get.toNamed('/onboarding');
+      Get.offNamed('/onboarding');
     } else {
       _userController.authState.listen(
         (event) async {
           if (event != null) {
             String role = await _userController.getRole();
             if (role == "estagiario") {
-              Get.toNamed('/home');
+              Get.offAndToNamed('/home');
             } else {
-              Get.toNamed('/enterprise');
+              Get.offAndToNamed('/enterprise');
             }
           } else {
-            Get.toNamed(
+            Get.offAndToNamed(
               '/login',
             );
           }
         },
-        onError: (_) => Get.toNamed('/login'),
-        cancelOnError: false,
       );
     }
   }

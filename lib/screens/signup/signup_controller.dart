@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uniestagios/core/errors/firebase/firebase_errors.dart';
 import 'package:uniestagios/data/firebase/sign_up/firebase_sign_up.dart';
 import 'package:uniestagios/models/enterprise_model.dart';
@@ -14,31 +15,15 @@ class SignUpController extends GetxController {
   UserModel userInternModel = UserModel();
   UserModel userEnterpriseModel = UserModel();
 
-  Future signIntern() async {
-    final status =
+  Future<User> signIntern() async {
+    final user =
         await _firebaseSignUp.createInternUser(userInternModel, internModel);
-
-    if (status == AuthResultStatus.successful) {
-      Get.toNamed('/home');
-    } else {
-      appWarningDialog(
-        title: 'Erro!',
-        middleText: 'Tente novamente',
-      );
-    }
+    return user;
   }
 
-  Future signEnterprise() async {
-    final status = await _firebaseSignUp.createEnterpriseUser(
+  Future<User> signEnterprise() async {
+    final user = await _firebaseSignUp.createEnterpriseUser(
         userEnterpriseModel, enterpriseModel);
-
-    if (status == AuthResultStatus.successful) {
-      Get.toNamed('/enterprise');
-    } else {
-      appWarningDialog(
-        title: 'Erro!',
-        middleText: 'Tente novamente',
-      );
-    }
+    return user;
   }
 }
